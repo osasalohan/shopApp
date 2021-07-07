@@ -17,16 +17,19 @@ export default (state = initialState, action) => {
           ...state.items,
           [product.id]: {
             quantity: state.items[product.id].quantity + 1,
-            cost: state.items[product.id].cost + product.price,
+            cost: state.items[product.id].cost + parseFloat(product.price),
           },
         };
       } else {
         items = {
           ...state.items,
-          [product.id]: { quantity: 1, cost: product.price },
+          [product.id]: { quantity: 1, cost: parseFloat(product.price) },
         };
       }
-      return { items, totalAmount: state.totalAmount + product.price };
+      return {
+        items,
+        totalAmount: state.totalAmount + parseFloat(product.price),
+      };
     case REMOVE_FROM_CART:
       product = action.product;
       if (state.items[product.id].quantity > 1) {
@@ -34,14 +37,17 @@ export default (state = initialState, action) => {
           ...state.items,
           [product.id]: {
             quantity: state.items[product.id].quantity - 1,
-            cost: state.items[product.id].cost - product.price,
+            cost: state.items[product.id].cost - parseFloat(product.price),
           },
         };
       } else {
         items = { ...state.items };
         delete items[product.id];
       }
-      return { items, totalAmount: state.totalAmount - product.price };
+      return {
+        items,
+        totalAmount: state.totalAmount - parseFloat(product.price),
+      };
     case ADD_ORDER:
       return initialState;
     case DELETE_PRODUCT:
